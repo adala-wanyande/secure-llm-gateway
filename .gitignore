@@ -1,0 +1,20 @@
+# IDEs
+.idea/
+.vscode/
+*.eclipse
+
+# Build artifacts
+target/
+build/
+*.class
+*.jar
+*.war
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables (Crucial for later when we have API keys/secrets)
+.env
+*.env
+application-secret.properties
