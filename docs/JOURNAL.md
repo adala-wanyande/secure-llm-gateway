@@ -23,3 +23,23 @@
 **Next Steps:**
 - Generate and link the remaining microservices (`core-ai-service` and `audit-service`) using the same CLI methodology.
 - Verify the multi-module compile for the entire ecosystem.
+
+## Day 2: Service Configuration, Reactive Routing & Docker Infrastructure
+**Date:** 2nd August 2026
+
+**Goal:** Configure microservice networking, establish API Gateway routing, and provision backing infrastructure.
+
+**Thoughts & Decisions:**
+- Transitioned all configuration files from `.properties` to `.yml` for better readability and nested structuring, which is standard in enterprise environments.
+- Assigned dedicated ports to prevent collisions: `api-gateway` (8080), `core-ai-service` (8081), and `audit-service` (8082).
+- Configured Spring Cloud Gateway to act as the reverse proxy. It uses Netty (non-blocking) to handle high concurrency, successfully intercepting `/api/v1/ai/**` and routing it to the Tomcat-backed Core AI Service.
+- Created an Infrastructure as Code (IaC) foundation using `docker-compose.yml` to provision Redis and PostgreSQL. Running these via Docker ensures a clean, containerized local environment mirroring production.
+
+**Technical Learnings & Debugging:**
+- **Maven Caching:** After renaming configuration files to `.yml` and changing ports, the Core AI service kept starting on 8080. This happened because Maven was executing from the cached `target` directory. Running `./mvnw clean` forced a rebuild and fixed the issue.
+- **Dependency Scope:** Encountered a JUnit compilation failure in the Gateway module (`package org.junit.jupiter.api does not exist`). This was resolved by ensuring the standard `spring-boot-starter-test` dependency was explicitly defined after previously removing a mismatched test dependency.
+- **Reactive vs Servlet:** Noticed via startup logs that API Gateway launches on Netty instead of Tomcat. This reinforced the architectural decision to use Spring Cloud Gateway for asynchronous, highly scalable request routing.
+
+**Next Steps:**
+- Connect the API Gateway to the Redis container.
+- Implement strict Rate Limiting policies to protect the Core AI Service from abuse.
