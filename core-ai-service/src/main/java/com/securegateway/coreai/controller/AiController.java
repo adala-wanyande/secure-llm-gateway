@@ -1,8 +1,9 @@
 package com.securegateway.coreai.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.securegateway.coreai.dto.PromptRequest;
+import com.securegateway.coreai.dto.PromptResponse;
+import com.securegateway.coreai.service.LlmOrchestrationService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -10,13 +11,20 @@ import java.util.Map;
 @RequestMapping("/api/v1/ai")
 public class AiController {
 
+    private final LlmOrchestrationService orchestrationService;
+
+    // Constructor Injection (Best Practice for Spring)
+    public AiController(LlmOrchestrationService orchestrationService) {
+        this.orchestrationService = orchestrationService;
+    }
+
     @GetMapping("/status")
     public Map<String, String> getStatus() {
-        // This simulates a response from our future LLM integration
-        return Map.of(
-            "service", "Core AI Service",
-            "status", "Ready to accept LLM prompts",
-            "security", "Enterprise Guardrails Active"
-        );
+        return Map.of("status", "Core AI Service is running with strict guardrails.");
+    }
+
+    @PostMapping("/prompt")
+    public PromptResponse submitPrompt(@RequestBody PromptRequest request) {
+        return orchestrationService.processPrompt(request);
     }
 }
