@@ -1,19 +1,19 @@
 # Secure Enterprise LLM Gateway
 
 ## Project Vision
-This project is a cloud-native, microservice-based architecture designed to securely self-host and interface with Large Language Models (LLMs). Motivated by the strict compliance and security requirements of the financial sector (e.g., banking), this gateway acts as a secure bridge between enterprise applications and non-deterministic AI models.
+This project is a cloud-native, microservice-based architecture designed to securely wrap a self-hosted Large Language Model (DeepSeek, hosted on an AWS GPU instance). Motivated by the strict compliance and security requirements of the financial sector (e.g., banking), this gateway provides deterministic guardrails around a non-deterministic AI, acting as a secure bridge between enterprise applications and the model.
 
 ## Objectives
-- **Self-Hosting:** Provision a virtual server to host an open-source LLM locally, ensuring data never leaves the controlled environment.
-- **Microservices Architecture:** Built with Spring Boot to ensure scalability, fault isolation, and maintainability.
-- **Enterprise Guardrails:** Implement rate-limiting, audit logging, and payload validation to mitigate the risks of AI in a strict corporate universe.
-- **Cloud-Native Principles:** Fully containerized (Docker), utilizing modern CI/CD practices, telemetry, and automated testing.
+- **Microservices Architecture:** Built with Spring Boot 3 / Java 17, structured as a strict Maven multi-module project, to ensure scalability, fault isolation, and maintainability.
+- **Enterprise Guardrails:** PII sanitization, strict Redis-backed rate-limiting, and immutable PostgreSQL audit logging to mitigate the risks of AI in a strict corporate environment.
+- **15-Factor App Security:** Zero hardcoded secrets. All configuration is externalized via environment variables loaded from `.env`.
+- **Cloud-Native Principles:** Fully containerized with Docker Compose (V2), mirroring a production-like local environment.
 
-## High-Level Architecture (Planned)
-1. **AI Gateway Service:** The entry point. Handles rate-limiting, authentication, and routing.
-2. **Audit & Telemetry Service:** Logs all prompts and responses for compliance and debugging.
-3. **LLM Hosting Node:** A self-hosted model (e.g., Llama 3 or Mistral) running on a virtual private server, exposed via a local API.
-4. **Frontend UI:** A clean interface to interact with the model safely.
+## Architecture
+1. **api-gateway (port 8080):** The entry point. Spring Cloud Gateway handles routing, rate-limiting, and forwards traffic to backend services.
+2. **core-ai-service (port 8081):** Sanitizes prompts (PII masking), calls the external DeepSeek LLM endpoint, and returns formatted responses.
+3. **audit-service (port 8082):** Asynchronously persists sanitized prompts and AI responses to PostgreSQL for compliance and traceability.
+4. **Infrastructure:** PostgreSQL (audit logging) and Redis (rate limiting), provisioned via Docker Compose.
 
 ## Development Journal
-I am documenting my daily progress, design decisions, and learnings in the [Project Journal](docs/JOURNAL.md).
+Daily progress, design decisions, and learnings are documented in the [Project Journal](JOURNAL.md).

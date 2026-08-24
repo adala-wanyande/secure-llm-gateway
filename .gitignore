@@ -3,7 +3,7 @@
 .vscode/
 *.eclipse
 
-# Build artifacts
+# Maven / Build artifacts
 target/
 build/
 *.class
@@ -14,17 +14,7 @@ build/
 .DS_Store
 Thumbs.db
 
-# Environment variables (Crucial for later when we have API keys/secrets)
+# Environment variables (Crucial for secrets/API keys)
 .env
 *.env
 application-secret.properties
-
-venv/
-env/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
-.DS_Store
-EOF

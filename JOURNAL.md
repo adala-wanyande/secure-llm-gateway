@@ -43,3 +43,17 @@
 **Next Steps:**
 - Connect the API Gateway to the Redis container.
 - Implement strict Rate Limiting policies to protect the Core AI Service from abuse.
+
+## Day 3: Re-committing to Spring Boot
+**Date:** 24th August 2026
+
+**Goal:** Restart the microservice build on Java/Spring Boot after a detour into FastAPI, this time following a strict commit-by-commit roadmap with an enterprise mentor.
+
+**Thoughts & Decisions:**
+- Between Day 2 and today, I pivoted the entire gateway to Python/FastAPI to move faster and get a working PII sanitization guardrail shipped quickly.
+- Coming back to this now: the original motivation for this project was to build banking-grade engineering muscle for Java/Spring Boot specifically, since that's the stack I'll be using at ING. FastAPI was a useful detour but doesn't serve that goal.
+- Removed the FastAPI implementation (`app/`, `requirements.txt`, `docker-compose.yml`) entirely rather than maintaining two parallel stacks. This journal (moved from `docs/JOURNAL.md` to the repo root) is the only carryover — the Day 1/2 entries above are still accurate history of the original Maven scaffolding work.
+- Restarting the roadmap from Commit 1: repo hygiene (`.gitignore`, `README.md`, `.env`/`.env.example`) before touching any Maven structure again.
+
+**Next Steps:**
+- Commit 2: root Maven `pom.xml` with dependency management, and scaffold the `api-gateway`, `core-ai-service`, `audit-service` modules.
